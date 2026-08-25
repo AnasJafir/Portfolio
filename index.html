@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anas Jafir — Backend &amp; AI Integration</title>
+<meta name="description" content="Backend engineer in Casablanca. Python, FastAPI and PostgreSQL, with language models held in place by deterministic tests.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anasjafir.me/">
+<meta property="og:title" content="Anas Jafir — Backend &amp; AI Integration">
+<meta property="og:description" content="Backend engineer in Casablanca. Python, FastAPI and PostgreSQL, with language models held in place by deterministic tests.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://anasjafir.me/?lang=en">
+<link rel="alternate" hreflang="fr" href="https://anasjafir.me/?lang=fr">
+<link rel="alternate" hreflang="x-default" href="https://anasjafir.me/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2314181C'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' fill='%23F5F1EA' text-anchor='middle'%3EAJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================ tokens */
+:root{
+  --paper:#F5F1EA; --surface:#FBF8F3; --ink:#14181C; --muted:#4A535C;
+  --faint:#8A8F96; --line:#E2DACB; --line-soft:#EDE6DA;
+  --blue:#1F4E75; --blue-deep:#123A5A; --ochre:#8A6A2B; --ochre-light:#C9A76A;
+  --dark:#14181C; --dark-2:#1B2126; --dark-line:#2E353C; --dark-text:#B6BCC2;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  --gut:clamp(20px,5vw,80px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:var(--blue);text-decoration:none}
+::selection{background:#E4D9C3}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
+
+/* ============================================================ i18n */
+[data-lang="fr"]{display:none}
+html.lang-fr [data-lang="fr"]{display:revert}
+html.lang-fr [data-lang="en"]{display:none}
+
+/* ============================================================ chrome */
+#progress{
+  position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);
+  transform-origin:0 50%;background:var(--blue);z-index:60;
+}
+#bar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px var(--gut);
+  background:color-mix(in srgb,var(--paper) 82%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transform:translateY(-100%);opacity:0;
+  transition:transform .45s var(--ease),opacity .45s var(--ease),border-color .45s var(--ease);
+}
+#bar.on{transform:none;opacity:1;border-bottom-color:var(--line)}
+#bar .who{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+#bar nav{display:flex;gap:22px}
+#bar nav a{
+  font-size:13.5px;color:var(--muted);position:relative;padding:2px 0;
+  transition:color .25s var(--ease);
+}
+#bar nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .3s var(--ease);
+}
+#bar nav a:hover,#bar nav a.active{color:var(--ink)}
+#bar nav a:hover::after,#bar nav a.active::after{transform:none}
+@media(max-width:800px){#bar nav{display:none}}
+
+.langtoggle{display:inline-flex;border:1px solid var(--line);background:var(--surface);overflow:hidden}
+.langtoggle button{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+  padding:7px 11px;min-height:32px;border:0;background:transparent;color:var(--faint);
+  cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease);
+}
+.langtoggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.langtoggle button:not([aria-pressed="true"]):hover{color:var(--ink)}
+
+/* ============================================================ layout */
+.wrap{max-width:1160px;margin:0 auto;padding-inline:var(--gut)}
+section{scroll-margin-top:78px}
+.rule{border-top:1px solid var(--ink);padding-top:18px;margin-bottom:clamp(28px,4vw,44px);
+  display:flex;align-items:baseline;gap:18px}
+.rule .n{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre)}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4.4vw,40px);line-height:1.02;letter-spacing:-.005em}
+h3{font-family:var(--serif);font-weight:400;letter-spacing:-.005em}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.gap-xl{height:clamp(60px,9vw,104px)}
+
+/* ============================================================ hero */
+#hero{padding-top:clamp(56px,9vw,96px)}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding-bottom:clamp(36px,6vw,60px)}
+.topline .who{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.herogrid{display:grid;grid-template-columns:1fr;gap:clamp(36px,5vw,44px)}
+@media(min-width:940px){.herogrid{grid-template-columns:1.85fr 1fr;gap:56px;align-items:start}}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(52px,9.5vw,88px);
+  line-height:.96;letter-spacing:-.012em;margin-bottom:.34em}
+.lead{font-size:clamp(19px,2.4vw,23px);line-height:1.42;max-width:22ch;margin-bottom:20px;text-wrap:pretty}
+@media(min-width:640px){.lead{max-width:30ch}}
+.sub{font-size:clamp(15.5px,1.7vw,17px);line-height:1.66;color:var(--muted);max-width:60ch;
+  margin-bottom:clamp(28px,4vw,36px);text-wrap:pretty}
+.cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;min-height:48px;padding:0 26px;
+  font-size:15px;font-weight:500;border:1px solid var(--ink);
+  transition:transform .28s var(--ease),background .28s var(--ease),color .28s var(--ease),box-shadow .28s var(--ease);
+}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--blue-deep);border-color:var(--blue-deep);transform:translateY(-2px);
+  box-shadow:0 10px 24px -14px rgba(20,24,28,.65)}
+.btn.ghost{color:var(--ink);background:transparent}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);transform:translateY(-2px)}
+.plain{display:inline-flex;align-items:center;min-height:48px;padding:0 6px;color:var(--muted);font-size:15px;
+  transition:color .25s var(--ease)}
+.plain:hover{color:var(--ink)}
+.altlang{font-size:13px;color:var(--faint);margin-top:14px}
+.altlang a{border-bottom:1px solid rgba(31,78,117,.35);transition:border-color .2s var(--ease),color .2s var(--ease)}
+.altlang a:hover{color:var(--blue-deep);border-bottom-color:var(--blue-deep)}
+
+.ledger{display:flex;flex-direction:column;gap:22px;padding-top:4px}
+@media(min-width:940px){.ledger{border-left:1px solid var(--line);padding-left:30px}}
+@media(max-width:939px){.ledger{border-top:1px solid var(--line);padding-top:28px}}
+.stat .v{font-family:var(--mono);font-size:clamp(28px,4.4vw,34px);color:var(--blue);
+  line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .k{font-size:13px;color:var(--faint);margin-top:2px;text-wrap:pretty}
+.ledger .foot{font-size:12px;color:var(--faint);line-height:1.5;padding-top:2px}
+
+/* ============================================================ work */
+.feature{
+  background:var(--surface);border:1px solid var(--line);
+  padding:clamp(26px,4vw,44px);margin-bottom:26px;
+  display:flex;flex-direction:column;gap:24px;
+  transition:box-shadow .4s var(--ease),transform .4s var(--ease),border-color .4s var(--ease);
+}
+.feature:hover{box-shadow:0 22px 44px -32px rgba(20,24,28,.5);border-color:#D6CBB6}
+.fhead{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.fhead h3{font-size:clamp(24px,3.4vw,34px);line-height:1.08}
+.fmeta{font-size:14px;color:var(--faint);margin-top:5px}
+.live{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--ochre);
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ochre);
+  animation:pulse 2.6s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.82)}}
+.fbody{font-size:clamp(15.5px,1.7vw,17px);line-height:1.66;max-width:74ch;text-wrap:pretty}
+.trio{display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:760px){.trio{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}}
+.trio .t{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.trio p{font-size:15px;line-height:1.56;color:#3C444C}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);
+  background:var(--paper);padding:5px 11px}
+.cards{display:grid;grid-template-columns:1fr;gap:26px}
+@media(min-width:760px){.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}}
+.card{border-top:1px solid var(--ink);padding-top:18px;display:flex;flex-direction:column;gap:11px;
+  transition:transform .35s var(--ease)}
+.card:hover{transform:translateY(-4px)}
+.card h3{font-size:24px;line-height:1.14}
+.card .meta{font-size:13px;color:var(--faint)}
+.card p{font-size:15px;line-height:1.6;color:#3C444C}
+.card .stack{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:auto;padding-top:4px}
+
+/* ============================================================ approach */
+#approach{position:relative;background:var(--dark);color:var(--paper);
+  padding-block:clamp(56px,8vw,80px);overflow:hidden;isolation:isolate}
+#approach::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
+  background:radial-gradient(560px circle at var(--mx,50%) var(--my,30%),rgba(201,167,106,.13),transparent 62%);
+  transition:opacity .6s var(--ease);
+}
+#approach.lit::before{opacity:1}
+#approach .rule{border-top-color:var(--dark-line)}
+#approach .rule .n{color:var(--ochre-light)}
+.astate{font-size:clamp(17px,2.2vw,20px);line-height:1.55;max-width:66ch;color:#E7E1D6;
+  margin-bottom:clamp(32px,5vw,48px);text-wrap:pretty}
+.principles{display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:820px){.principles{grid-template-columns:repeat(3,minmax(0,1fr));gap:40px}}
+.principle .n{font-family:var(--mono);font-size:12px;color:var(--ochre-light);margin-bottom:11px}
+.principle h3{font-size:clamp(21px,2.6vw,26px);line-height:1.18;margin-bottom:11px}
+.principle p{font-size:15px;line-height:1.66;color:var(--dark-text)}
+.limit{border-top:1px solid var(--dark-line);margin-top:clamp(34px,5vw,52px);padding-top:26px;
+  display:flex;gap:clamp(18px,3vw,40px);align-items:flex-start;flex-wrap:wrap}
+.limit .t{font-family:var(--mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+  color:#7C848C;white-space:nowrap;padding-top:3px}
+.limit p{font-size:16px;line-height:1.66;color:var(--dark-text);max-width:70ch;text-wrap:pretty}
+
+/* ============================================================ skills */
+.skills{display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:760px){.skills{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 60px}}
+.skill .t{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.skill p{font-size:16px;line-height:1.6;color:#22282E}
+
+/* ============================================================ timeline */
+.row{display:grid;grid-template-columns:1fr;gap:4px;padding:17px 0;border-bottom:1px solid var(--line)}
+@media(min-width:680px){.row{grid-template-columns:150px minmax(0,1fr);gap:26px}}
+.row:last-child{border-bottom:0}
+.row .when{font-family:var(--mono);font-size:14px;color:var(--ochre)}
+.row .what{font-size:17px;font-weight:500}
+.row .detail{font-size:15px;color:var(--faint);line-height:1.55;text-wrap:pretty}
+
+/* ============================================================ contact */
+.contact{background:var(--surface);border:1px solid var(--line);
+  padding:clamp(32px,5vw,56px) clamp(24px,4vw,48px);
+  display:flex;justify-content:space-between;align-items:center;gap:36px;flex-wrap:wrap}
+.contact h2{max-width:18ch}
+.contact p{font-size:16px;line-height:1.6;color:var(--muted);max-width:56ch;margin-top:12px;text-wrap:pretty}
+.clist{display:flex;flex-direction:column;gap:6px;font-size:16px}
+.clist a{display:inline-flex;align-items:center;min-height:34px;
+  border-bottom:1px solid rgba(31,78,117,.28);transition:color .22s var(--ease),border-color .22s var(--ease)}
+.clist a:hover{color:var(--blue-deep);border-bottom-color:var(--blue-deep)}
+footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:26px 0 clamp(40px,6vw,64px);font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* ============================================================ reveal */
+[data-r]{opacity:0;transform:translateY(18px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-r].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  [data-r]{opacity:1;transform:none;transition:none}
+  #bar{transition:none}
+  .live::before{animation:none}
+  .btn:hover,.card:hover{transform:none}
+  #approach::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<header id="bar">
+  <span class="who">Anas Jafir</span>
+  <nav aria-label="Sections">
+    <a href="#work"><span data-lang="en">Work</span><span data-lang="fr">Projets</span></a>
+    <a href="#approach"><span data-lang="en">Approach</span><span data-lang="fr">Approche</span></a>
+    <a href="#skills"><span data-lang="en">Skills</span><span data-lang="fr">Compétences</span></a>
+    <a href="#background"><span data-lang="en">Background</span><span data-lang="fr">Parcours</span></a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="langtoggle" role="group" aria-label="Language">
+    <button type="button" data-set="en" aria-pressed="true">EN</button>
+    <button type="button" data-set="fr" aria-pressed="false">FR</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================================================== HERO -->
+<section id="hero" class="wrap">
+  <div class="topline">
+    <span class="who">anasjafir.me</span>
+    <div class="langtoggle" role="group" aria-label="Language">
+      <button type="button" data-set="en" aria-pressed="true">EN</button>
+      <button type="button" data-set="fr" aria-pressed="false">FR</button>
+    </div>
+  </div>
+
+  <div class="herogrid">
+    <div>
+      <p class="eyebrow" data-r style="color:var(--ochre);margin-bottom:18px">
+        <span data-lang="en">Backend &amp; AI integration · Casablanca</span>
+        <span data-lang="fr">Backend &amp; intégration IA · Casablanca</span>
+      </p>
+      <h1 data-r>Anas Jafir</h1>
+      <p class="lead" data-r>
+        <span data-lang="en">I build backends that let a language model do useful work without anyone having to trust it.</span>
+        <span data-lang="fr">Je construis des backends où un modèle de langage fait un travail utile sans qu'on ait besoin de lui faire confiance.</span>
+      </p>
+      <p class="sub" data-r>
+        <span data-lang="en">Python, FastAPI and PostgreSQL, with LLMs held in place by deterministic tests. Sole engineer of a documentary platform now serving 1,049 published records. Medical training before software — which is why accessibility and measurement are habits, not features.</span>
+        <span data-lang="fr">Python, FastAPI et PostgreSQL, avec des LLM tenus par des tests déterministes. Seul ingénieur d'une plateforme documentaire qui sert aujourd'hui 1 049 fiches publiées. Formation médicale avant l'ingénierie : l'accessibilité et la mesure sont des réflexes, pas des options.</span>
+      </p>
+      <div data-r>
+        <div class="cta">
+          <a class="btn solid" href="mailto:contact@anasjafir.me">
+            <span data-lang="en">Get in touch</span><span data-lang="fr">Me contacter</span></a>
+          <a class="btn ghost" id="cvlink" href="/cv.pdf" download>
+            <span data-lang="en">Download CV</span><span data-lang="fr">Télécharger le CV</span></a>
+          <a class="plain" href="https://github.com/AnasJafir" rel="me noopener">GitHub</a>
+          <a class="plain" href="https://linkedin.com/in/anasjafir" rel="me noopener">LinkedIn</a>
+        </div>
+        <p class="altlang">
+          <span data-lang="en">Also available <a href="#" data-switch="fr">in French</a>.</span>
+          <span data-lang="fr">Également disponible <a href="#" data-switch="en">en anglais</a>.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="ledger" data-r>
+      <p class="eyebrow"><span data-lang="en">In production</span><span data-lang="fr">En production</span></p>
+      <div class="stat">
+        <div class="v"><span class="num" data-count="1049">0</span></div>
+        <div class="k"><span data-lang="en">records published across 201 topics</span><span data-lang="fr">fiches publiées sur 201 thèmes</span></div>
+      </div>
+      <div class="stat">
+        <div class="v"><span class="num" data-count="804">0</span> + <span class="num" data-count="32">0</span></div>
+        <div class="k"><span data-lang="en">tests and verifiers gating every commit</span><span data-lang="fr">tests et vérificateurs à chaque commit</span></div>
+      </div>
+      <div class="stat">
+        <div class="v"><span class="num" data-count="469">0</span></div>
+        <div class="k"><span data-lang="en">documents converted in one pass, zero failures</span><span data-lang="fr">fiches converties en une passe, sans échec</span></div>
+      </div>
+      <p class="foot"><span data-lang="en">Every number here is measured on the repository or in production.</span><span data-lang="fr">Chaque chiffre est mesuré sur le dépôt ou en production.</span></p>
+    </div>
+  </div>
+</section>
+
+<div class="gap-xl"></div>
+
+<!-- ================================================== WORK -->
+<section id="work" class="wrap">
+  <div class="rule" data-r>
+    <span class="n">01</span>
+    <h2><span data-lang="en">Selected work</span><span data-lang="fr">Projets</span></h2>
+  </div>
+
+  <article class="feature" data-r>
+    <div class="fhead">
+      <div>
+        <h3><span data-lang="en">CerDoc — economic research database</span><span data-lang="fr">CerDoc — base documentaire économique</span></h3>
+        <p class="fmeta">
+          <span data-lang="en">Sole architect and engineer · independent research centre · 2026 → present</span>
+          <span data-lang="fr">Seul concepteur et développeur · centre de recherche indépendant · 2026 → aujourd'hui</span>
+        </p>
+      </div>
+      <span class="live">LIVE</span>
+    </div>
+    <p class="fbody">
+      <span data-lang="en">Twenty years of inconsistent Word files, turned into a structured, searchable body of work — and a reader application its single user can actually use. That user is non-technical and visually impaired, cannot debug, cannot work around a defect, and will never call support. The whole architecture follows from that.</span>
+      <span data-lang="fr">Vingt ans de fichiers Word hétérogènes, transformés en un corpus structuré et consultable — et une application de lecture que son unique utilisateur peut réellement utiliser. Cet utilisateur n'est pas technique, il est malvoyant, il ne peut ni déboguer, ni contourner un défaut, et n'appellera jamais un support. Toute l'architecture découle de là.</span>
+    </p>
+    <div class="trio">
+      <div>
+        <p class="t"><span data-lang="en">Conversion pipeline</span><span data-lang="fr">Chaîne de conversion</span></p>
+        <p><span data-lang="en">Format detected from content, never from the extension. Continuous numbering that is never reassigned. Original formatting preserved.</span><span data-lang="fr">Format détecté sur le contenu, jamais sur l'extension. Numérotation continue et jamais réattribuée. Mise en forme d'origine préservée.</span></p>
+      </div>
+      <div>
+        <p class="t"><span data-lang="en">Ingestion platform</span><span data-lang="fr">Plateforme d'ingestion</span></p>
+        <p><span data-lang="en">FastAPI on DigitalOcean. Upload, assisted extraction, WYSIWYG editing, duplicate control, audit log.</span><span data-lang="fr">FastAPI sur DigitalOcean. Dépôt de fichier, extraction assistée, édition WYSIWYG, contrôle de doublons, journalisation.</span></p>
+      </div>
+      <div>
+        <p class="t"><span data-lang="en">Reader application</span><span data-lang="fr">Application de lecture</span></p>
+        <p><span data-lang="en">React Native / Expo on Vercel. Topic browsing, search, faithful tables and figures, a computed legibility floor.</span><span data-lang="fr">React Native / Expo sur Vercel. Consultation par thème, recherche, rendu fidèle des tableaux et visuels, plancher de lisibilité calculé.</span></p>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL / Supabase</span>
+      <span class="tag">React Native</span><span class="tag">TypeScript</span><span class="tag">Cloudinary</span><span class="tag">Vercel</span>
+    </div>
+  </article>
+
+  <div class="cards">
+    <article class="card" data-r>
+      <h3>Do I Need A Doctor</h3>
+      <p class="meta"><span data-lang="en">Personal project · in production</span><span data-lang="fr">Projet personnel · en production</span></p>
+      <p><span data-lang="en">Symptom analysis driven by a language model, for people deciding whether a visit is warranted. Built on an AI-assisted cycle and shipped.</span><span data-lang="fr">Analyse de symptômes pilotée par un modèle de langage, pour aider à décider si une consultation s'impose. Développée en cycle assisté par IA, et livrée.</span></p>
+      <p class="stack">Next.js · React</p>
+    </article>
+    <article class="card" data-r>
+      <h3>Oralease</h3>
+      <p class="meta"><span data-lang="en">Dental practice management · MVP shipped</span><span data-lang="fr">Gestion de cabinet dentaire · MVP livré</span></p>
+      <p><span data-lang="en">Data model, backend APIs and the security layer for a clinic management tool — role-based access and encryption from the first commit.</span><span data-lang="fr">Modèle de données, APIs backend et couche de sécurité d'un outil de gestion de cabinet — contrôle d'accès par rôles et chiffrement dès le premier commit.</span></p>
+      <p class="stack">SQLAlchemy · PostgreSQL · RBAC</p>
+    </article>
+    <article class="card" data-r>
+      <h3><span data-lang="en">Agent-run domain desk</span><span data-lang="fr">Domaining piloté par agents</span></h3>
+      <p class="meta"><span data-lang="en">Independent venture · running since 2026</span><span data-lang="fr">Activité indépendante · en service depuis 2026</span></p>
+      <p><span data-lang="en">A small commercial operation run end to end by scheduled AI agents: inbox triage, weekly prospecting, an automated CRM and drafted negotiation mail I approve before it goes out.</span><span data-lang="fr">Une petite activité commerciale menée de bout en bout par des agents IA planifiés : veille email, prospection hebdomadaire, CRM automatisé et emails de négociation rédigés que je valide avant envoi.</span></p>
+      <p class="stack">Claude · MCP · Gmail API</p>
+    </article>
+  </div>
+</section>
+
+<div class="gap-xl"></div>
+
+<!-- ================================================== APPROACH -->
+<section id="approach">
+  <div class="wrap">
+    <div class="rule" data-r>
+      <span class="n">02</span>
+      <h2><span data-lang="en">How I work with AI</span><span data-lang="fr">Ma façon de travailler avec l'IA</span></h2>
+    </div>
+    <p class="astate" data-r>
+      <span data-lang="en">“I use AI to code” is worth nothing in 2026 — everyone writes it. What is worth something is the system that makes an agent's work safe to ship.</span>
+      <span data-lang="fr">« J'utilise l'IA pour coder » ne vaut rien en 2026 : tout le monde l'écrit. Ce qui vaut, c'est le système qui rend le travail d'un agent sûr à livrer.</span>
+    </p>
+
+    <div class="principles">
+      <div class="principle" data-r>
+        <p class="n">01 — <span data-lang="en">Separation</span><span data-lang="fr">Séparation</span></p>
+        <h3><span data-lang="en">Judgement to the model, arithmetic to code</span><span data-lang="fr">Le jugement au modèle, le calcul au code</span></h3>
+        <p><span data-lang="en">Any question whose answer is the same twice leaves the model and is frozen into tested code.</span><span data-lang="fr">Toute question dont la réponse est la même deux fois sort du modèle et se fige dans du code testé.</span></p>
+      </div>
+      <div class="principle" data-r>
+        <p class="n">02 — <span data-lang="en">Constraint</span><span data-lang="fr">Contrainte</span></p>
+        <h3><span data-lang="en">Gates, not code review</span><span data-lang="fr">Des contrôles, pas de la relecture</span></h3>
+        <p><span data-lang="en">804 tests and 32 verifiers block every commit. The agent produces fast; the checks decide what ships.</span><span data-lang="fr">804 tests et 32 vérificateurs bloquent chaque commit. L'agent produit vite ; les contrôles décident de ce qui passe.</span></p>
+      </div>
+      <div class="principle" data-r>
+        <p class="n">03 — Sabotage</p>
+        <h3><span data-lang="en">A test that never failed proves nothing</span><span data-lang="fr">Un test qui n'a jamais échoué ne prouve rien</span></h3>
+        <p><span data-lang="en">Every new check is deliberately broken on write. That habit has caught checks passing green over a feature that was dead.</span><span data-lang="fr">Chaque nouveau contrôle est délibérément cassé à l'écriture. Ce réflexe a démasqué des tests au vert alors que la fonction qu'ils gardaient était morte.</span></p>
+      </div>
+    </div>
+
+    <div class="limit" data-r>
+      <span class="t"><span data-lang="en">And its limit</span><span data-lang="fr">Et sa limite</span></span>
+      <p>
+        <span data-lang="en">An automated check once confirmed that no figure in a summary note had been altered. True — and the note was still wrong: an exact percentage had quietly changed subject. Automated verification bounds the risk; it does not remove it. That is where a human who knows the domain still earns their place.</span>
+        <span data-lang="fr">Un contrôle automatique a confirmé un jour qu'aucun chiffre n'avait été modifié dans une note de synthèse. C'était vrai — et la note était fausse quand même : un pourcentage exact avait changé de sujet. La vérification automatique borne le risque, elle ne le supprime pas. C'est là que l'expert métier garde toute sa place.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="gap-xl"></div>
+
+<!-- ================================================== SKILLS -->
+<section id="skills" class="wrap">
+  <div class="rule" data-r>
+    <span class="n">03</span>
+    <h2><span data-lang="en">What I work with</span><span data-lang="fr">Ce avec quoi je travaille</span></h2>
+  </div>
+  <div class="skills">
+    <div class="skill" data-r><p class="t">Backend</p><p><span data-lang="en">Python, FastAPI, Flask, REST API design, SQLAlchemy, Pandas, service-oriented architecture</span><span data-lang="fr">Python, FastAPI, Flask, conception d'APIs REST, SQLAlchemy, Pandas, architecture orientée services</span></p></div>
+    <div class="skill" data-r><p class="t"><span data-lang="en">Data</span><span data-lang="fr">Données</span></p><p><span data-lang="en">PostgreSQL, Supabase (JSONB, row-level security), MySQL, SQLite, migrations and backfill</span><span data-lang="fr">PostgreSQL, Supabase (JSONB, sécurité RLS), MySQL, SQLite, migrations et backfill</span></p></div>
+    <div class="skill" data-r><p class="t"><span data-lang="en">AI in production</span><span data-lang="fr">IA en production</span></p><p><span data-lang="en">LLM integration behind vendor-independent contracts (Claude, OpenAI, Gemini), scheduled agents over MCP, evals and deterministic gate tests</span><span data-lang="fr">Intégration de LLM derrière des contrats indépendants du fournisseur (Claude, OpenAI, Gemini), agents planifiés via MCP, evals et gate tests déterministes</span></p></div>
+    <div class="skill" data-r><p class="t"><span data-lang="en">Delivery</span><span data-lang="fr">Livraison</span></p><p><span data-lang="en">Docker, CI/CD, Git, Nginx, Gunicorn, DigitalOcean, Vercel; authentication, RBAC, encryption, SSL/TLS</span><span data-lang="fr">Docker, CI/CD, Git, Nginx, Gunicorn, DigitalOcean, Vercel ; authentification, RBAC, chiffrement, SSL/TLS</span></p></div>
+    <div class="skill" data-r><p class="t">Frontend</p><p>React, Next.js, React Native / Expo, TypeScript</p></div>
+  </div>
+</section>
+
+<div class="gap-xl"></div>
+
+<!-- ================================================== BACKGROUND -->
+<section id="background" class="wrap">
+  <div class="rule" data-r>
+    <span class="n">04</span>
+    <h2><span data-lang="en">Background</span><span data-lang="fr">Parcours</span></h2>
+  </div>
+  <div>
+    <div class="row" data-r>
+      <span class="when">2026 →</span>
+      <div>
+        <p class="what"><span data-lang="en">Freelance software engineer — CerDoc</span><span data-lang="fr">Ingénieur logiciel freelance — CerDoc</span></p>
+        <p class="detail"><span data-lang="en">Sole technical contributor for an independent economic research centre.</span><span data-lang="fr">Seul intervenant technique pour un centre de recherche économique indépendant.</span></p>
+      </div>
+    </div>
+    <div class="row" data-r>
+      <span class="when">2025</span>
+      <div>
+        <p class="what"><span data-lang="en">Backend developer, AI health application — Avyna</span><span data-lang="fr">Développeur backend, application IA santé — Avyna</span></p>
+        <p class="detail"><span data-lang="en">AI-powered health recommendations and symptom tracking.</span><span data-lang="fr">Recommandations de santé propulsées par IA et suivi de symptômes.</span></p>
+      </div>
+    </div>
+    <div class="row" data-r>
+      <span class="when">2025</span>
+      <div>
+        <p class="what">Stanford Medicine — Deep Data Research Center</p>
+        <p class="detail"><span data-lang="en">Data science for precision medicine and cloud computing; data-driven precision medicine for diabetes.</span><span data-lang="fr">Data science pour la médecine de précision et le cloud ; médecine de précision data-driven appliquée au diabète.</span></p>
+      </div>
+    </div>
+    <div class="row" data-r>
+      <span class="when">2025</span>
+      <div>
+        <p class="what"><span data-lang="en">AI trainer, code quality review — Outlier</span><span data-lang="fr">AI trainer, revue de qualité de code — Outlier</span></p>
+        <p class="detail"><span data-lang="en">Reviewing AI-generated Python for correctness and robustness.</span><span data-lang="fr">Revue de code Python généré par IA : correction et robustesse.</span></p>
+      </div>
+    </div>
+    <div class="row" data-r>
+      <span class="when">2023–2025</span>
+      <div>
+        <p class="what"><span data-lang="en">ALX Software Engineering Programme — graduate, backend</span><span data-lang="fr">ALX Software Engineering Programme — diplômé, spécialisation backend</span></p>
+        <p class="detail"><span data-lang="en">Backend systems and production APIs; AI for Developers; AI Starter Kit.</span><span data-lang="fr">Systèmes backend et APIs de production ; AI for Developers ; AI Starter Kit.</span></p>
+      </div>
+    </div>
+    <div class="row" data-r>
+      <span class="when"><span data-lang="en">Before</span><span data-lang="fr">Avant</span></span>
+      <div>
+        <p class="what"><span data-lang="en">Dental medicine — Hassan II University, Casablanca</span><span data-lang="fr">Médecine dentaire — Université Hassan II, Casablanca</span></p>
+        <p class="detail"><span data-lang="en">A deliberate move into engineering. The clinical habits — measure first, never trust an instrument you have not checked — came along.</span><span data-lang="fr">Une réorientation assumée vers l'ingénierie. Les réflexes cliniques — mesurer d'abord, ne jamais faire confiance à un instrument non vérifié — ont suivi.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gap-xl"></div>
+
+<!-- ================================================== CONTACT -->
+<section id="contact" class="wrap">
+  <div class="contact" data-r>
+    <div>
+      <h2><span data-lang="en">Open to backend and AI-integration roles</span><span data-lang="fr">Ouvert aux postes backend et intégration IA</span></h2>
+      <p><span data-lang="en">Remote, or relocation — Canada, Europe, Morocco. Also happy to hear about volunteering work where research, health or documentation needs an engineer.</span><span data-lang="fr">À distance ou avec mobilité — Canada, Europe, Maroc et Golf. Également ouvert au volontariat là où la recherche, la santé ou la documentation ont besoin d'un ingénieur.</span></p>
+    </div>
+    <div class="clist">
+      <a href="mailto:contact@anasjafir.me">contact@anasjafir.me</a>
+      <a href="tel:+212657212131">+212 6 57 21 21 31</a>
+      <a href="https://github.com/AnasJafir" rel="me noopener">github.com/AnasJafir</a>
+      <a href="https://linkedin.com/in/anasjafir" rel="me noopener">linkedin.com/in/anasjafir</a>
+    </div>
+  </div>
+  <footer>
+    <span>anasjafir.me</span>
+    <span><span data-lang="en">Casablanca, Morocco</span><span data-lang="fr">Casablanca, Maroc</span></span>
+  </footer>
+</section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------------------------------------------- language */
+  var LANG = "en";
+  function setLang(l, push){
+    LANG = (l === "fr") ? "fr" : "en";
+    root.classList.toggle("lang-fr", LANG === "fr");
+    root.setAttribute("lang", LANG);
+    document.title = (LANG === "fr")
+      ? "Anas Jafir — Backend & intégration IA"
+      : "Anas Jafir — Backend & AI Integration";
+    var cv = document.getElementById("cvlink");
+    if (cv) cv.setAttribute("href", LANG === "fr" ? "/cv-fr.pdf" : "/cv.pdf");
+    Array.prototype.forEach.call(document.querySelectorAll(".langtoggle button"), function(b){
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-set") === LANG));
+    });
+    formatNumbers();
+    if (push && window.history && history.replaceState){
+      try { history.replaceState(null, "", "?lang=" + LANG); } catch (e) {}
+    }
+  }
+
+  /* Fuseaux horaires des territoires où le français est la langue de lecture
+     par défaut sur l'ensemble du territoire. Consultés uniquement quand la
+     langue du navigateur ne déclare ni français ni anglais.
+
+     Volontairement absents : Bruxelles, Zurich, Vaduz, Maurice. Ce sont des
+     pays multilingues où le repli serait un pari : un navigateur uniquement
+     néerlandais à Bruxelles ou uniquement allemand à Zurich appartient
+     justement à quelqu'un qui ne lit pas le français. Les francophones de ces
+     pays déclarent fr-BE ou fr-CH et sont déjà servis à l'étape 2. */
+  var FR_TZ = {
+    "Africa/Casablanca":1,"Africa/El_Aaiun":1,"Africa/Algiers":1,"Africa/Tunis":1,
+    "Africa/Dakar":1,"Africa/Abidjan":1,"Africa/Bamako":1,"Africa/Ouagadougou":1,
+    "Africa/Niamey":1,"Africa/Conakry":1,"Africa/Lome":1,"Africa/Porto-Novo":1,
+    "Africa/Douala":1,"Africa/Libreville":1,"Africa/Brazzaville":1,"Africa/Kinshasa":1,
+    "Africa/Lubumbashi":1,"Africa/Bangui":1,"Africa/Ndjamena":1,"Africa/Djibouti":1,
+    "Africa/Nouakchott":1,"Indian/Antananarivo":1,"Indian/Comoro":1,
+    "Indian/Reunion":1,"Indian/Mayotte":1,
+    "Europe/Paris":1,"Europe/Luxembourg":1,"Europe/Monaco":1,
+    "America/Montreal":1,"America/Guadeloupe":1,"America/Martinique":1,
+    "America/Cayenne":1,"America/Port-au-Prince":1,"America/Miquelon":1,
+    "Pacific/Noumea":1,"Pacific/Tahiti":1,"Pacific/Marquesas":1,"Pacific/Gambier":1,
+    "Pacific/Wallis":1
+  };
+
+  function detectLang(){
+    /* 1. Un lien explicite gagne toujours : anasjafir.me/?lang=fr */
+    var q = new URLSearchParams(location.search).get("lang");
+    if (q === "fr" || q === "en") return q;
+
+    /* 2. Les langues déclarées par le navigateur, dans l'ordre de préférence.
+          Seul signal capable de distinguer un recruteur québécois d'un
+          recruteur ontarien : les deux partagent le fuseau America/Toronto. */
+    var langs = (navigator.languages && navigator.languages.length)
+      ? navigator.languages : [navigator.language || ""];
+    for (var i = 0; i < langs.length; i++){
+      var l = String(langs[i]).toLowerCase();
+      if (l.indexOf("fr") === 0) return "fr";
+      if (l.indexOf("en") === 0) return "en";
+    }
+
+    /* 3. Ni français ni anglais déclarés : on se rabat sur le pays,
+          approché par le fuseau horaire. */
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz && FR_TZ[tz]) return "fr";
+    } catch (e) {}
+
+    return "en";
+  }
+  var initial = detectLang();
+
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-set]");
+    if (b){ setLang(b.getAttribute("data-set"), true); return; }
+    var s = e.target.closest("[data-switch]");
+    if (s){ e.preventDefault(); setLang(s.getAttribute("data-switch"), true); }
+  });
+
+  /* ---------------------------------------------------- numbers */
+  var nums = Array.prototype.slice.call(document.querySelectorAll(".num"));
+  function fmt(n){ return LANG === "fr" ? n.toLocaleString("fr-FR") : n.toLocaleString("en-US"); }
+  function formatNumbers(){
+    nums.forEach(function(el){
+      if (el.dataset.done === "1") el.textContent = fmt(parseInt(el.dataset.count, 10));
+    });
+  }
+  function countUp(el){
+    var target = parseInt(el.dataset.count, 10);
+    if (reduce){ el.textContent = fmt(target); el.dataset.done = "1"; return; }
+    var dur = 1100, t0 = null;
+    function step(ts){
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(step);
+      else el.dataset.done = "1";
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---------------------------------------------------- reveal */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll("[data-r]"));
+  if ("IntersectionObserver" in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        var sibs = Array.prototype.slice.call(el.parentNode.children).filter(function(c){
+          return c.hasAttribute && c.hasAttribute("data-r");
+        });
+        var i = Math.max(0, sibs.indexOf(el));
+        el.style.transitionDelay = Math.min(i * 70, 280) + "ms";
+        el.classList.add("in");
+        if (el.classList.contains("ledger")) el.querySelectorAll(".num").forEach(countUp);
+        io.unobserve(el);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+    nums.forEach(function(el){ el.textContent = fmt(parseInt(el.dataset.count,10)); el.dataset.done = "1"; });
+  }
+
+  /* ---------------------------------------------------- header + progress */
+  var bar = document.getElementById("bar");
+  var prog = document.getElementById("progress");
+  var ticking = false;
+  function onScroll(){
+    var y = window.scrollY || window.pageYOffset;
+    bar.classList.toggle("on", y > 260);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.transform = "scaleX(" + (h > 0 ? Math.min(y / h, 1) : 0) + ")";
+    ticking = false;
+  }
+  window.addEventListener("scroll", function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  onScroll();
+
+  /* ---------------------------------------------------- active nav */
+  var links = Array.prototype.slice.call(document.querySelectorAll("#bar nav a"));
+  if ("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var id = "#" + en.target.id;
+        links.forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === id); });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    ["work","approach","skills","background","contact"].forEach(function(id){
+      var s = document.getElementById(id); if (s) spy.observe(s);
+    });
+  }
+
+  /* ---------------------------------------------------- spotlight */
+  var ap = document.getElementById("approach");
+  if (ap && !reduce && window.matchMedia("(hover: hover)").matches){
+    ap.addEventListener("pointermove", function(e){
+      var r = ap.getBoundingClientRect();
+      ap.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      ap.style.setProperty("--my", (e.clientY - r.top) + "px");
+      ap.classList.add("lit");
+    });
+    ap.addEventListener("pointerleave", function(){ ap.classList.remove("lit"); });
+  }
+
+  setLang(initial, false);
+})();
+</script>
+</body>
+</html>
